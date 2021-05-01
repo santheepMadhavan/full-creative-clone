@@ -58,27 +58,30 @@ window.onload = () => {
       } else {
         $(".black").css("background", "none");
       }
-      const windowBottom =
-        $(event.currentTarget).scrollTop() +
-        $(event.currentTarget).innerHeight();
-      $(".fade").each((index, element) => {
-        /* Check the location of each desired element */
-        const objectBottom =
-          $(element).offset().top + $(element).outerHeight() - 300;
+      if (window.innerWidth >= 750) {
+        console.log(window.innerWidth);
+        const windowBottom =
+          $(event.currentTarget).scrollTop() +
+          $(event.currentTarget).innerHeight();
+        $(".fade").each((index, element) => {
+          /* Check the location of each desired element */
+          const objectBottom =
+            $(element).offset().top + $(element).outerHeight();
 
-        /* If the element is completely within bounds of the window, fade it in */
-        if (objectBottom < windowBottom) {
-          //object comes into view (scrolling down)
-          if ($(element).css("opacity") == 0) {
-            $(element).fadeTo(500, 1);
+          /* If the element is completely within bounds of the window, fade it in */
+          if (objectBottom < windowBottom) {
+            //object comes into view (scrolling down)
+            if ($(element).css("opacity") == 0) {
+              $(element).fadeTo(500, 1);
+            }
+          } else {
+            //object goes out of view (scrolling up)
+            if ($(element).css("opacity") == 1) {
+              $(element).fadeTo(500, 0);
+            }
           }
-        } else {
-          //object goes out of view (scrolling up)
-          if ($(element).css("opacity") == 1) {
-            $(element).fadeTo(500, 0);
-          }
-        }
-      });
+        });
+      }
     })
     .scroll(); //invoke scroll-handler on page-load
 };
