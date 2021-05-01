@@ -1,4 +1,4 @@
-var TxtType = function (el, toRotate, period) {
+let TxtType = function (el, toRotate, period) {
   this.toRotate = toRotate;
   this.el = el;
   this.loopNum = 0;
@@ -9,8 +9,8 @@ var TxtType = function (el, toRotate, period) {
 };
 
 TxtType.prototype.tick = function () {
-  var i = this.loopNum % this.toRotate.length;
-  var fullTxt = this.toRotate[i];
+  let i = this.loopNum % this.toRotate.length;
+  let fullTxt = this.toRotate[i];
 
   if (this.isDeleting) {
     this.txt = fullTxt.substring(0, this.txt.length - 1);
@@ -20,8 +20,7 @@ TxtType.prototype.tick = function () {
 
   this.el.innerHTML = '<span class="wrap">' + this.txt + "</span>";
 
-  var that = this;
-  var delta = 200 - Math.random() * 100;
+  let delta = 200 - Math.random() * 100;
 
   if (this.isDeleting) {
     delta /= 2;
@@ -36,28 +35,53 @@ TxtType.prototype.tick = function () {
     delta = 500;
   }
 
-  setTimeout(function () {
-    that.tick();
+  setTimeout(() => {
+    this.tick();
   }, delta);
 };
 
 window.onload = function () {
-  var elements = document.getElementsByClassName("typewriter");
-  for (var i = 0; i < elements.length; i++) {
-    var toRotate = elements[i].getAttribute("data-type");
-    var period = elements[i].getAttribute("data-period");
+  let elements = document.getElementsByClassName("typewriter");
+  for (let i = 0; i < elements.length; i++) {
+    let toRotate = elements[i].getAttribute("data-type");
+    let period = elements[i].getAttribute("data-period");
     if (toRotate) {
       new TxtType(elements[i], JSON.parse(toRotate), period);
     }
   }
 
-  $(window).scroll(function () {
-    var scroll = $(window).scrollTop();
-    console.log(scroll);
-    if (scroll > 700) {
-      $(".black").css("background", "#333333d1");
-    } else {
-      $(".black").css("background", "none");
-    }
-  });
+  $(window)
+    .scroll(function () {
+      let scroll = $(window).scrollTop();
+      if (scroll > 700) {
+        $(".black").css("background", "#333333d1");
+      } else {
+        $(".black").css("background", "none");
+      }
+      let windowBottom = $(this).scrollTop() + $(this).innerHeight();
+      $(".fade").each(function () {
+        /* Check the location of each desired element */
+        let objectBottom = $(this).offset().top + $(this).outerHeight() - 300;
+
+        console.log(objectBottom, windowBottom);
+
+        /* If the element is completely within bounds of the window, fade it in */
+        if (objectBottom < windowBottom) {
+          //object comes into view (scrolling down)
+          if ($(this).css("opacity") == 0) {
+            $(this).fadeTo(500, 1);
+          }
+        } else {
+          //object goes out of view (scrolling up)
+          if ($(this).css("opacity") == 1) {
+            $(this).fadeTo(500, 0);
+          }
+        }
+      });
+    })
+    .scroll(); //invoke scroll-handler on page-load
 };
+
+function scrollView() {
+  $("html, body").animate({ scrollTop: "0px" }, 1500);
+}

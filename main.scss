@@ -112,7 +112,7 @@ li:first-child {
   float: left;
   margin: 16px;
 
-  &:hover {
+  &:after {
     border-bottom: 0px;
   }
 }
@@ -120,9 +120,17 @@ li:first-child {
 li {
   float: right;
   cursor: pointer;
-}
-li:hover {
-  border-bottom: 0.1em solid $primary-color;
+
+  &:after {
+    display: block;
+    content: "";
+    border-bottom: 0.1em solid $primary-color;
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+  }
+  &:hover:after {
+    transform: scaleX(1);
+  }
 }
 
 li:nth-child(2) {
@@ -272,7 +280,7 @@ li a {
   padding: 0px;
   height: 500px;
 
-  img {
+  .img {
     margin: 0px;
     height: 500px;
   }
@@ -302,5 +310,20 @@ li a {
   p {
     color: grey;
     margin: 4px;
+  }
+}
+.circle-btn {
+  position: relative;
+  top: -50px;
+  height: 50px;
+  width: 50px;
+  background-color: white;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: transform 0.3s;
+
+  &:hover {
+    transform: scale(1.2);
   }
 }
