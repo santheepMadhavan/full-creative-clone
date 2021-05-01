@@ -40,7 +40,7 @@ TxtType.prototype.tick = function () {
   }, delta);
 };
 
-window.onload = function () {
+window.onload = () => {
   let elements = document.getElementsByClassName("typewriter");
   for (let i = 0; i < elements.length; i++) {
     let toRotate = elements[i].getAttribute("data-type");
@@ -51,30 +51,31 @@ window.onload = function () {
   }
 
   $(window)
-    .scroll(function () {
-      let scroll = $(window).scrollTop();
+    .scroll((event) => {
+      const scroll = $(window).scrollTop();
       if (scroll > 700) {
         $(".black").css("background", "#333333d1");
       } else {
         $(".black").css("background", "none");
       }
-      let windowBottom = $(this).scrollTop() + $(this).innerHeight();
-      $(".fade").each(function () {
+      const windowBottom =
+        $(event.currentTarget).scrollTop() +
+        $(event.currentTarget).innerHeight();
+      $(".fade").each((index, element) => {
         /* Check the location of each desired element */
-        let objectBottom = $(this).offset().top + $(this).outerHeight() - 300;
-
-        console.log(objectBottom, windowBottom);
+        const objectBottom =
+          $(element).offset().top + $(element).outerHeight() - 300;
 
         /* If the element is completely within bounds of the window, fade it in */
         if (objectBottom < windowBottom) {
           //object comes into view (scrolling down)
-          if ($(this).css("opacity") == 0) {
-            $(this).fadeTo(500, 1);
+          if ($(element).css("opacity") == 0) {
+            $(element).fadeTo(500, 1);
           }
         } else {
           //object goes out of view (scrolling up)
-          if ($(this).css("opacity") == 1) {
-            $(this).fadeTo(500, 0);
+          if ($(element).css("opacity") == 1) {
+            $(element).fadeTo(500, 0);
           }
         }
       });
